@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    public float minsize = 0.3f;
+    public float minsize = 1.0f;
     public float maxsize = 2.5f;
     public float minSpeed = 30f;
     public float maxSpeed = 150f;
