@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
             // limit the speed of the player because i HATE my players grr i hate it when they go too fast and i cant control them
             if (rb.linearVelocity.magnitude > maxSpeed)
             {
-                rb.velocity = rb.velocity.normalized * maxSpeed;
+                rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
             }
         }
         // boosting flame but really its running particles and stuff, but the flame is a particle system so it looks like a flame unfortunately
