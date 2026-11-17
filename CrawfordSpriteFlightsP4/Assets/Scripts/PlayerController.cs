@@ -1,35 +1,37 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
+
 public class PlayerController : MonoBehaviour
 {
-    public GameObject boosterFlame;
-    public float maxSpeed = 5f;
+
+
+    private float elapsedTime = 0f;
+    private float score = 0f;
+
+    public float scoreMultiplier = 10f;
     public float thrustForce = 1f;
+
     Rigidbody2D rb;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public UIDocument uiDocument;
+    public GameObject boosterFlame;
+    private Label scoreText;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        scoreText = uiDocument.rootVisualElement.Q<Label>("ScoreLabel");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Mouse.current.leftButton.isPressed) 
-        {
-            // where tf is the mouse? the script that calculates it:
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
-            Vector2 direction = (mousePos - transform.position).normalized;
-            // go go human guy go to the mouse position
-            transform.up = direction;
-            rb.AddForce(direction * thrustForce);
-            // limit the speed of the player because i HATE my players grr i hate it when they go too fast and i cant control them
-            if (rb.linearVelocity.magnitude > maxSpeed)
-            {
-                rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
-            }
-        }
-        // boosting flame but really its running particles and stuff, but the flame is a particle system so it looks like a flame unfortunately
+        UpdateScore();
+        MovePlayer();
+    }
+
+    void MovePlayer()
+    {
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             boosterFlame.SetActive(true);
@@ -39,13 +41,30 @@ public class PlayerController : MonoBehaviour
             boosterFlame.SetActive(false);
         }
 
+        if (Mouse.current.leftButton.isPressed)
+        {
+
+
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
+            Vector2 direction = (mousePos - transform.position).normalized;
+
+
+            transform.up = direction;
+            rb.AddForce(direction * thrustForce);
+        }
     }
-    // kill the player when it collides with an obstacle because i hate when my players dont die when they hit obstacles and i want to make sure they die when they hit obstacles
+void UpdateScore()
+    {
+        elapsedTime += Time.deltaTime;
+        score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
+        scoreText.text = "Score: " + score;
+    }
     void OnCollisionEnter2D(Collision2D collision)
     {
         Destroy(gameObject);
     }
-}
 
-// i want capri desktop assistant on this pc
-// capri yams
+}
+// no more commeents because I am tired of writing them and also i slacked off the entirety of tuesday so i am going to lock in and get caught up so when i go home i can sleep for 30 hours
+// also i am going to make a new story and it will not be related to this project at all because its fun to slack off 
+// not during this period im joking i swear i will get caught up and not slack off anymore uhhh idk im bored too 
